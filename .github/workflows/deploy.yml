@@ -1,0 +1,16 @@
+name: Deploy
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["**.md", ".github/workflows/ci.yml"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Customize for your target environment (AWS, Railway, Fly.io, etc.)
+      # - uses: docker/build-push-action@v5
+      #   with:
+      #     push: true
+      #     tags: ghcr.io/${{ github.repository }}:latest
