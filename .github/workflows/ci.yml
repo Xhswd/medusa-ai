@@ -14,7 +14,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - run: npm ci
+      - run: npm ci --legacy-peer-deps
       - run: npx tsc --noEmit
 
   test:
@@ -43,7 +43,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - run: npm ci
+      - run: npm ci --legacy-peer-deps
       - run: npx medusa db:migrate
       - run: npm test
 
@@ -55,7 +55,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - run: npm ci
+      - run: npm ci --legacy-peer-deps
       - run: npx medusa build
 
   docker:
