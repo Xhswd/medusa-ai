@@ -9,23 +9,22 @@ export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const suggestion = await aiService.retrievePricingSuggestion(id)
 
   try {
-    const productService = req.scope.resolve("product")
+    const productService = req.scope.resolve("product") as any
     const product = await productService.retrieveProduct(suggestion.product_id, {
       relations: ["variants", "variants.prices"],
     })
 
-    const variant = (product.variants as Array<Record<string, unknown>>)?.find(
-      (v) => v.id === suggestion.variant_id,
+    const variant = product.variants?.find(
+      (v: any) => v.id === suggestion.variant_id,
     )
 
     if (variant) {
-      const priceService = req.scope.resolve("pricing")
-      const prices = variant.prices as Array<Record<string, unknown>>
-      if (prices?.[0]) {
-        await priceService.updatePriceSets({
-          id: prices[0].price_set_id as string,
-          prices: [{ ...prices[0], amount: Number(suggestion.suggested_price) }],
-        })
+      const priceService = req.scope.resolve("pricing") as any
+      const price = variant.prices?.[0]
+      if (price) {
+        await priceService.updatePriceSets(price.price_set_id, [
+          { ...price, amount: Number(suggestion.suggested_price) },
+        ])
       }
     }
   } catch (err) {

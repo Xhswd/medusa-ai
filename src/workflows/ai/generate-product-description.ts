@@ -17,7 +17,7 @@ type Input = {
 const fetchProductStep = createStep(
   "fetch-product-for-ai",
   async (input: { product_id: string }, { container }) => {
-    const productService = container.resolve("product")
+    const productService = container.resolve("product") as any
     const product = await productService.retrieveProduct(input.product_id, {
       relations: ["variants", "collection", "tags", "type"],
     })
@@ -29,7 +29,7 @@ const generateContentStep = createStep(
   "generate-ai-content",
   async (
     input: {
-      product: Record<string, unknown>
+      product: any
       content_types: string[]
       provider?: string
       tone?: string
@@ -45,14 +45,14 @@ const generateContentStep = createStep(
     }
 
     const product = input.product
-    const name = (product.title as string) || "Unknown Product"
-    const description = (product.description as string) || ""
-    const tags = ((product.tags as Array<{ value: string }>) || []).map((t) => t.value).join(", ")
-    const collection = (product.collection as { title?: string })?.title || ""
-    const type = (product.type as { value?: string })?.value || ""
-    const variants = (product.variants as Array<Record<string, unknown>>) || []
+    const name = product.title || "Unknown Product"
+    const description = product.description || ""
+    const tags = (product.tags || []).map((t: any) => t.value).join(", ")
+    const collection = product.collection?.title || ""
+    const type = product.type?.value || ""
+    const variants = product.variants || []
     const variantInfo = variants
-      .map((v) => `${v.title}: $${v.prices?.[0]?.amount || "N/A"}`)
+      .map((v: any) => `${v.title}: $${v.prices?.[0]?.amount || "N/A"}`)
       .join("; ")
 
     const productContext = `
@@ -93,14 +93,19 @@ Example: {"description": "...", "seo_title": "...", "seo_description": "..."}`
       }
     }
 
-    const productId = product.id as string
+    const productId = product.id
     const contents = input.content_types.map((ct) => ({
       reference_type: "product",
       reference_id: productId,
       content_type: ct,
       content: parsed[ct] || "",
       provider: provider.id,
-      model_used: provider.id === "openai" ? "gpt-4o" : provider.id === "claude" ? "claude-sonnet-4-20250514" : "llama3.2",
+      model_used:
+        provider.id === "openai"
+          ? "gpt-4o"
+          : provider.id === "claude"
+            ? "claude-sonnet-4-20250514"
+            : "llama3.2",
       is_approved: false,
     }))
 
@@ -110,12 +115,13 @@ Example: {"description": "...", "seo_title": "...", "seo_description": "..."}`
 
 const saveContentStep = createStep(
   "save-ai-content",
-  async (contents: Record<string, unknown>[], { container }) => {
+  async (contents: any[], { container }) => {
     const aiService = container.resolve(AI_MODULE) as AiModuleService
     const saved = await aiService.createAiGeneratedContents(contents)
     return new StepResponse(saved, saved)
   },
-  async (saved: Array<{ id: string }>, { container }) => {
+  async (saved: any, { container }) => {
+    if (!saved) return
     const aiService = container.resolve(AI_MODULE) as AiModuleService
     for (const record of saved) {
       await aiService.deleteAiGeneratedContents(record.id)

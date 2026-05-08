@@ -15,25 +15,22 @@ type Input = {
 const fetchPricingDataStep = createStep(
   "fetch-pricing-data",
   async (input: { product_id: string }, { container }) => {
-    const productService = container.resolve("product")
+    const productService = container.resolve("product") as any
     const product = await productService.retrieveProduct(input.product_id, {
       relations: ["variants", "variants.prices"],
     })
 
     let inventoryData: Array<{ variant_id: string; stocked_quantity: number }> = []
     try {
-      const inventoryService = container.resolve("inventory")
-      const inventoryItems = await inventoryService.listInventoryItems({})
+      const inventoryService = container.resolve("inventory") as any
+      const [inventoryItems] = await inventoryService.listAndCountInventoryItems({})
       inventoryData = inventoryItems
-        .filter((item: Record<string, unknown>) => {
-          const variant = (product.variants as Array<Record<string, unknown>>)?.find(
-            (v) => v.id === item.variant_id,
-          )
-          return !!variant
+        .filter((item: any) => {
+          return product.variants?.some((v: any) => v.id === item.variant_id)
         })
-        .map((item: Record<string, unknown>) => ({
-          variant_id: item.variant_id as string,
-          stocked_quantity: (item.stocked_quantity as number) || 0,
+        .map((item: any) => ({
+          variant_id: item.variant_id,
+          stocked_quantity: item.stocked_quantity || 0,
         }))
     } catch {
       // inventory module may not be available
@@ -47,7 +44,7 @@ const generatePricingSuggestionStep = createStep(
   "generate-pricing-suggestion",
   async (
     input: {
-      product: Record<string, unknown>
+      product: any
       inventoryData: Array<{ variant_id: string; stocked_quantity: number }>
       provider?: string
     },
@@ -60,9 +57,9 @@ const generatePricingSuggestionStep = createStep(
     }
 
     const product = input.product
-    const variants = (product.variants as Array<Record<string, unknown>>) || []
+    const variants = product.variants || []
 
-    const variantData = variants.map((v) => {
+    const variantData = variants.map((v: any) => {
       const price = v.prices?.[0]
       const inventory = input.inventoryData.find((inv) => inv.variant_id === v.id)
       return {
@@ -83,7 +80,7 @@ Respond in valid JSON format.`
 Product: ${product.title}
 Description: ${product.description || "N/A"}
 Current variants and prices:
-${variantData.map((v) => `  - ${v.title}: ${v.current_price} ${v.currency} (inventory: ${v.inventory_level})`).join("\n")}
+${variantData.map((v: any) => `  - ${v.title}: ${v.current_price} ${v.currency} (inventory: ${v.inventory_level})`).join("\n")}
 
 Provide pricing suggestions in this JSON format:
 {
@@ -105,7 +102,7 @@ Provide pricing suggestions in this JSON format:
       maxTokens: 1500,
     })
 
-    let parsed: Record<string, unknown>
+    let parsed: any
     try {
       const jsonMatch = response.match(/\{[\s\S]*\}/)
       parsed = JSON.parse(jsonMatch ? jsonMatch[0] : response)
@@ -113,13 +110,13 @@ Provide pricing suggestions in this JSON format:
       parsed = { suggestions: [], overall_recommendation: response }
     }
 
-    const suggestions = ((parsed.suggestions as Array<Record<string, unknown>>) || []).map((s) => ({
-      product_id: product.id as string,
-      variant_id: s.variant_id as string || null,
-      current_price: s.current_price as number,
-      suggested_price: s.suggested_price as number,
-      reason: s.reason as string || "",
-      confidence: s.confidence as number || 0.5,
+    const suggestions = (parsed.suggestions || []).map((s: any) => ({
+      product_id: product.id,
+      variant_id: s.variant_id || null,
+      current_price: s.current_price,
+      suggested_price: s.suggested_price,
+      reason: s.reason || "",
+      confidence: s.confidence || 0.5,
       factors: {
         inventory_level: input.inventoryData.find(
           (inv) => inv.variant_id === s.variant_id,
@@ -135,12 +132,13 @@ Provide pricing suggestions in this JSON format:
 
 const savePricingSuggestionsStep = createStep(
   "save-pricing-suggestions",
-  async (suggestions: Record<string, unknown>[], { container }) => {
+  async (suggestions: any[], { container }) => {
     const aiService = container.resolve(AI_MODULE) as AiModuleService
     const saved = await aiService.createPricingSuggestions(suggestions)
     return new StepResponse(saved, saved)
   },
-  async (saved: Array<{ id: string }>, { container }) => {
+  async (saved: any, { container }) => {
+    if (!saved) return
     const aiService = container.resolve(AI_MODULE) as AiModuleService
     for (const record of saved) {
       await aiService.deletePricingSuggestions(record.id)

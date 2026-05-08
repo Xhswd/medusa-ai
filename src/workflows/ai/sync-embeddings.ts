@@ -14,8 +14,8 @@ type Input = {
 
 const fetchAllProductsStep = createStep(
   "fetch-all-products",
-  async (_input: Record<string, unknown>, { container }) => {
-    const productService = container.resolve("product")
+  async (_input: unknown, { container }) => {
+    const productService = container.resolve("product") as any
     const [products] = await productService.listAndCountProducts(
       {},
       { relations: ["tags", "type", "collection"], take: 1000 },
@@ -27,7 +27,7 @@ const fetchAllProductsStep = createStep(
 const generateEmbeddingsStep = createStep(
   "generate-product-embeddings",
   async (
-    input: { products: Array<Record<string, unknown>>; provider?: string },
+    input: { products: any[]; provider?: string },
     { container },
   ) => {
     const aiService = container.resolve(AI_MODULE) as AiModuleService
@@ -44,13 +44,11 @@ const generateEmbeddingsStep = createStep(
     }> = []
 
     for (const product of input.products) {
-      const name = (product.title as string) || ""
-      const description = (product.description as string) || ""
-      const tags = ((product.tags as Array<{ value: string }>) || [])
-        .map((t) => t.value)
-        .join(", ")
-      const type = (product.type as { value?: string })?.value || ""
-      const collection = (product.collection as { title?: string })?.title || ""
+      const name = product.title || ""
+      const description = product.description || ""
+      const tags = (product.tags || []).map((t: any) => t.value).join(", ")
+      const type = product.type?.value || ""
+      const collection = product.collection?.title || ""
 
       const content = [name, description, tags, type, collection].filter(Boolean).join(" | ")
 
@@ -59,7 +57,7 @@ const generateEmbeddingsStep = createStep(
       try {
         const embedding = await provider.generateEmbedding(content)
         results.push({
-          product_id: product.id as string,
+          product_id: product.id,
           content,
           embedding_version: provider.id === "openai" ? "text-embedding-3-small" : provider.id,
           metadata: { embedding },
@@ -81,7 +79,7 @@ const saveEmbeddingsStep = createStep(
         product_id: string
         content: string
         embedding_version: string
-        metadata: Record<string, unknown>
+        metadata: any
       }>
     },
     { container },

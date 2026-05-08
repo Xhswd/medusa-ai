@@ -49,14 +49,14 @@ const vectorSearchStep = createStep(
     }
 
     const results = embeddings
-      .map((e) => ({
+      .map((e: any) => ({
         product_id: e.product_id,
         similarity: cosineSimilarity(
           input.embedding,
-          (e.metadata as { embedding?: number[] })?.embedding || [],
+          e.metadata?.embedding || [],
         ),
       }))
-      .sort((a, b) => b.similarity - a.similarity)
+      .sort((a: any, b: any) => b.similarity - a.similarity)
       .slice(0, input.limit)
 
     return new StepResponse(results)
@@ -73,7 +73,7 @@ const fetchProductDetailsStep = createStep(
       return new StepResponse([])
     }
 
-    const productService = container.resolve("product")
+    const productService = container.resolve("product") as any
     const products = []
 
     for (const r of input.results) {

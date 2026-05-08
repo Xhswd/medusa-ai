@@ -53,15 +53,15 @@ const searchRelevantProductsStep = createStep(
       }
 
       const topProducts = embeddings
-        .map((e) => ({
+        .map((e: any) => ({
           product_id: e.product_id,
           content: e.content,
           similarity: cosineSimilarity(
             embedding,
-            (e.metadata as { embedding?: number[] })?.embedding || [],
+            e.metadata?.embedding || [],
           ),
         }))
-        .sort((a, b) => b.similarity - a.similarity)
+        .sort((a: any, b: any) => b.similarity - a.similarity)
         .slice(0, 5)
 
       return new StepResponse(topProducts)
@@ -76,8 +76,8 @@ const generateResponseStep = createStep(
   async (
     input: {
       message: string
-      history: Array<{ role: string; content: string }>
-      relevantProducts: Array<{ content: string; similarity: number }>
+      history: any[]
+      relevantProducts: any[]
       provider?: string
     },
     { container },
@@ -89,14 +89,14 @@ const generateResponseStep = createStep(
     }
 
     const productContext = input.relevantProducts.length
-      ? `\n\nRelevant products from catalog:\n${input.relevantProducts.map((p) => `- ${p.content}`).join("\n")}`
+      ? `\n\nRelevant products from catalog:\n${input.relevantProducts.map((p: any) => `- ${p.content}`).join("\n")}`
       : ""
 
     const systemPrompt = `You are a helpful shopping assistant for an online store.
 Answer questions about products, provide recommendations, and help customers find what they need.
 Be friendly, concise, and helpful. If you reference products, mention them by name.${productContext}`
 
-    const historyText = input.history.map((m) => `${m.role}: ${m.content}`).join("\n")
+    const historyText = input.history.map((m: any) => `${m.role}: ${m.content}`).join("\n")
     const prompt = historyText ? `${historyText}\nuser: ${input.message}` : input.message
 
     const response = await provider.generateText(prompt, {
