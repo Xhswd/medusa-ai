@@ -1,7 +1,7 @@
 import type { SubscriberArgs, SubscriberConfig } from "@medusajs/framework"
-import { generateProductDescriptionWorkflow } from "../workflows/ai/generate-product-description.ts"
-import { AI_MODULE } from "../modules/ai/index.ts"
-import type AiModuleService from "../modules/ai/service.ts"
+import { generateProductDescriptionWorkflow } from "../workflows/ai/generate-product-description"
+import { AI_MODULE } from "../modules/ai/index"
+import type AiModuleService from "../modules/ai/service"
 
 export default async function productCreatedHandler({
   event: { data },

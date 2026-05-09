@@ -1,6 +1,6 @@
-import { OpenAIProvider } from "../providers/openai.ts"
-import { ClaudeProvider } from "../providers/claude.ts"
-import { OllamaProvider } from "../providers/ollama.ts"
+import { OpenAIProvider } from "../providers/openai"
+import { ClaudeProvider } from "../providers/claude"
+import { OllamaProvider } from "../providers/ollama"
 
 describe("AI Providers", () => {
   describe("OpenAIProvider", () => {

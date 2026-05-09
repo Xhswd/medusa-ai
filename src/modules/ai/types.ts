@@ -13,7 +13,7 @@ export interface LLMProvider {
 }
 
 export interface AiModuleOptions {
-  providers: {
+  llmProviders: {
     openai?: { apiKey?: string }
     claude?: { apiKey?: string }
     ollama?: { baseUrl?: string }
