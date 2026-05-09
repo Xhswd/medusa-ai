@@ -1,5 +1,5 @@
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { smartSearchWorkflow } from "../../../../workflows/ai/smart-search.js"
+import { smartSearchWorkflow } from "../../../../workflows/ai/smart-search"
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const { query, limit, provider } = req.body as {

@@ -1,11 +1,11 @@
-import type { AiModuleOptions, LLMProvider } from "../types.js"
-import { OpenAIProvider } from "./openai.js"
-import { ClaudeProvider } from "./claude.js"
-import { OllamaProvider } from "./ollama.js"
+import type { AiModuleOptions, LLMProvider } from "../types"
+import { OpenAIProvider } from "./openai"
+import { ClaudeProvider } from "./claude"
+import { OllamaProvider } from "./ollama"
 
-export { OpenAIProvider } from "./openai.js"
-export { ClaudeProvider } from "./claude.js"
-export { OllamaProvider } from "./ollama.js"
+export { OpenAIProvider } from "./openai"
+export { ClaudeProvider } from "./claude"
+export { OllamaProvider } from "./ollama"
 
 export function createProviders(options: AiModuleOptions): Map<string, LLMProvider> {
   const providers = new Map<string, LLMProvider>()
