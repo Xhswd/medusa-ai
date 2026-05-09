@@ -1,4 +1,4 @@
-import AiModule from "../modules/ai/index"
+import AiModule from "../modules/ai/index.js"
 import ProductModule from "@medusajs/medusa/product"
 import { defineLink } from "@medusajs/framework/utils"
 

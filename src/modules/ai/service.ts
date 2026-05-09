@@ -1,10 +1,10 @@
 import { MedusaService } from "@medusajs/framework/utils"
-import AiGeneratedContent from "./models/ai-generated-content"
-import ProductEmbedding from "./models/product-embedding"
-import PricingSuggestion from "./models/pricing-suggestion"
-import AiChatMessage from "./models/ai-chat-message"
-import type { AiModuleOptions, LLMProvider } from "./types"
-import { createProviders } from "./providers/index"
+import AiGeneratedContent from "./models/ai-generated-content.js"
+import ProductEmbedding from "./models/product-embedding.js"
+import PricingSuggestion from "./models/pricing-suggestion.js"
+import AiChatMessage from "./models/ai-chat-message.js"
+import type { AiModuleOptions, LLMProvider } from "./types.js"
+import { createProviders } from "./providers/index.js"
 
 class AiModuleService extends MedusaService({
   AiGeneratedContent,

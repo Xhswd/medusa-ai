@@ -1,4 +1,4 @@
-import type { LLMProvider, GenerateOptions } from "../types"
+import type { LLMProvider, GenerateOptions } from "../types.js"
 
 export class OllamaProvider implements LLMProvider {
   id = "ollama"

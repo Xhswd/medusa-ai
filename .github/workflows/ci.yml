@@ -37,6 +37,7 @@ jobs:
       DATABASE_URL: postgres://medusa:medusa_password@localhost:5432/medusa_ai_test
       JWT_SECRET: test-secret
       COOKIE_SECRET: test-secret
+      NODE_OPTIONS: --loader ts-node/esm
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

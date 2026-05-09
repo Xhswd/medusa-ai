@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "AI-powered e-commerce platform built on Medusa.js v2",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "dev": "medusa develop",
     "build": "medusa build",
@@ -10,7 +11,7 @@
     "db:migrate": "medusa db:migrate",
     "db:generate": "medusa db:generate",
     "db:sync-links": "medusa db:sync-links",
-    "test": "jest --passWithNoTests",
+    "test": "NODE_OPTIONS='--experimental-vm-modules' jest --passWithNoTests",
     "lint": "eslint src/"
   },
   "dependencies": {

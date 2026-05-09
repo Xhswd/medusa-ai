@@ -1,5 +1,5 @@
 import OpenAI from "openai"
-import type { LLMProvider, GenerateOptions } from "../types"
+import type { LLMProvider, GenerateOptions } from "../types.js"
 
 export class OpenAIProvider implements LLMProvider {
   id = "openai"

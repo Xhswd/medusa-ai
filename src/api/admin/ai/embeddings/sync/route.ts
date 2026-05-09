@@ -1,5 +1,5 @@
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { syncEmbeddingsWorkflow } from "../../../../../workflows/ai/sync-embeddings"
+import { syncEmbeddingsWorkflow } from "../../../../../workflows/ai/sync-embeddings.js"
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const { provider } = req.body as { provider?: string }
