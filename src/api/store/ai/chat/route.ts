@@ -1,5 +1,5 @@
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { shoppingAssistantWorkflow } from "../../../../workflows/ai/shopping-assistant"
+import { shoppingAssistantWorkflow } from "../../../../workflows/ai/shopping-assistant.js"
 import { randomUUID } from "crypto"
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {

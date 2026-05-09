@@ -1,7 +1,7 @@
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { dynamicPricingWorkflow } from "../../../../workflows/ai/dynamic-pricing"
-import { AI_MODULE } from "../../../../modules/ai"
-import type AiModuleService from "../../../../modules/ai/service"
+import { dynamicPricingWorkflow } from "../../../../workflows/ai/dynamic-pricing.js"
+import { AI_MODULE } from "../../../../modules/ai/index.js"
+import type AiModuleService from "../../../../modules/ai/service.js"
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const { product_id, provider } = req.body as {

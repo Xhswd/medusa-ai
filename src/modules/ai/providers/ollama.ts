@@ -1,4 +1,4 @@
-import type { LLMProvider, GenerateOptions } from "../types"
+import type { LLMProvider, GenerateOptions } from "../types.js"
 
 export class OllamaProvider implements LLMProvider {
   id = "ollama"
@@ -41,7 +41,7 @@ export class OllamaProvider implements LLMProvider {
       throw new Error(`Ollama error: ${resp.status} ${resp.statusText}`)
     }
 
-    const data = await resp.json()
+    const data: any = await resp.json()
     return data.response || ""
   }
 
@@ -59,7 +59,7 @@ export class OllamaProvider implements LLMProvider {
       throw new Error(`Ollama embedding error: ${resp.status} ${resp.statusText}`)
     }
 
-    const data = await resp.json()
+    const data: any = await resp.json()
     return data.embedding || []
   }
 }

@@ -1,6 +1,6 @@
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { AI_MODULE } from "../../../../../../modules/ai"
-import type AiModuleService from "../../../../../../modules/ai/service"
+import { AI_MODULE } from "../../../../../../modules/ai/index.js"
+import type AiModuleService from "../../../../../../modules/ai/service.js"
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const { id } = req.params as { id: string }

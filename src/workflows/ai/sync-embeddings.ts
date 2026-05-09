@@ -4,8 +4,8 @@ import {
   StepResponse,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { AI_MODULE } from "../../modules/ai"
-import type AiModuleService from "../../modules/ai/service"
+import { AI_MODULE } from "../../modules/ai/index.js"
+import type AiModuleService from "../../modules/ai/service.js"
 
 type Input = {
   provider?: string
@@ -14,7 +14,7 @@ type Input = {
 
 const fetchAllProductsStep = createStep(
   "fetch-all-products",
-  async (_input: unknown, { container }) => {
+  async (_input: Record<string, unknown>, { container }) => {
     const productService = container.resolve("product") as any
     const [products] = await productService.listAndCountProducts(
       {},
