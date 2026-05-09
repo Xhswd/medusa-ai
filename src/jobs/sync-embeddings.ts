@@ -1,7 +1,7 @@
 import type { MedusaContainer } from "@medusajs/framework"
-import { syncEmbeddingsWorkflow } from "../workflows/ai/sync-embeddings.js"
-import { AI_MODULE } from "../modules/ai/index.js"
-import type AiModuleService from "../modules/ai/service.js"
+import { syncEmbeddingsWorkflow } from "../workflows/ai/sync-embeddings.ts"
+import { AI_MODULE } from "../modules/ai/index.ts"
+import type AiModuleService from "../modules/ai/service.ts"
 
 export default async function syncEmbeddingsJob(container: MedusaContainer) {
   const aiService = container.resolve(AI_MODULE) as AiModuleService

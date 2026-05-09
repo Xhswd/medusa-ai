@@ -4,8 +4,8 @@ import {
   StepResponse,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk"
-import { AI_MODULE } from "../../modules/ai/index.js"
-import type AiModuleService from "../../modules/ai/service.js"
+import { AI_MODULE } from "../../modules/ai/index.ts"
+import type AiModuleService from "../../modules/ai/service.ts"
 
 type Input = {
   product_id: string

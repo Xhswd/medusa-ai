@@ -1,6 +1,6 @@
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { AI_MODULE } from "../../../../modules/ai/index.js"
-import type AiModuleService from "../../../../modules/ai/service.js"
+import { AI_MODULE } from "../../../../modules/ai/index.ts"
+import type AiModuleService from "../../../../modules/ai/service.ts"
 
 export async function GET(req: MedusaRequest, res: MedusaResponse) {
   const aiService = req.scope.resolve(AI_MODULE) as AiModuleService

@@ -1,5 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk"
-import type { LLMProvider, GenerateOptions } from "../types.js"
+import type { LLMProvider, GenerateOptions } from "../types.ts"
 
 export class ClaudeProvider implements LLMProvider {
   id = "claude"

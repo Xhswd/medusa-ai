@@ -1,7 +1,7 @@
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { generateProductDescriptionWorkflow } from "../../../../workflows/ai/generate-product-description.js"
-import { AI_MODULE } from "../../../../modules/ai/index.js"
-import type AiModuleService from "../../../../modules/ai/service.js"
+import { generateProductDescriptionWorkflow } from "../../../../workflows/ai/generate-product-description.ts"
+import { AI_MODULE } from "../../../../modules/ai/index.ts"
+import type AiModuleService from "../../../../modules/ai/service.ts"
 
 export async function POST(req: MedusaRequest, res: MedusaResponse) {
   const { product_id, content_types, provider, tone } = req.body as {
