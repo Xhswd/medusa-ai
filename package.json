@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "description": "AI-powered e-commerce platform built on Medusa.js v2",
   "license": "MIT",
-  "type": "module",
   "scripts": {
     "dev": "medusa develop",
     "build": "medusa build",
